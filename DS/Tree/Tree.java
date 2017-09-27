@@ -1,12 +1,12 @@
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * Created by 1021343 on 26-Sep-17.
  */
 public class Tree {
 
-     static TreeNode root;
+    static TreeNode root;
 
     public void add(int d) {
         TreeNode n = new TreeNode(d);
@@ -37,7 +37,7 @@ public class Tree {
         if (arr == null)
             return;
         Tree t = new Tree();
-        for (int i: arr) {
+        for (int i : arr) {
             t.add(i);
         }
     }
@@ -57,7 +57,7 @@ public class Tree {
     }
 
 
-    public  void inOrderTraversal(TreeNode node) {
+    public void inOrderTraversal(TreeNode node) {
         if (node == null)
             return;
 
@@ -72,19 +72,18 @@ public class Tree {
     }
 
 
-    public  void preOrderTraversal(TreeNode node) {
+    public void preOrderTraversal(TreeNode node) {
         if (node == null)
             return;
         System.out.print(node.data + " ");
         preOrderTraversal(node.left);
         preOrderTraversal(node.right);
     }
-    public void levelOrderTraversal(TreeNode node)
-    {
+
+    public void levelOrderTraversal(TreeNode node) {
         Queue<TreeNode> queue = new LinkedList<TreeNode>();
         queue.add(node);
-        while (!queue.isEmpty())
-        {
+        while (!queue.isEmpty()) {
 
             TreeNode tempNode = queue.poll();
             System.out.print(tempNode.data + " ");
@@ -98,6 +97,7 @@ public class Tree {
             }
         }
     }
+
     public void levelOrderTraversalLineByLine(TreeNode root) {
         if (root == null)
             return;
@@ -124,42 +124,92 @@ public class Tree {
     }
 
 
-    public void levelOrderTraversalLineByLineUsing2Q(TreeNode root){
-        if(root==null)
+    public void levelOrderTraversalLineByLineUsing2Q(TreeNode root) {
+        if (root == null)
             return;
         Queue<TreeNode> q1 = new LinkedList<>();
         Queue<TreeNode> q2 = new LinkedList<>();
         q1.add(root);
-        while(!q1.isEmpty() || !q2.isEmpty()){
+        while (!q1.isEmpty() || !q2.isEmpty()) {
             System.out.println();
-            while(!q1.isEmpty()){
+            while (!q1.isEmpty()) {
                 TreeNode node = q1.poll();
                 System.out.print(node.data + " ");
-                if(node.left!=null){
+                if (node.left != null) {
                     q2.add(node.left);
                 }
-                if(node.right!=null){
+                if (node.right != null) {
                     q2.add(node.right);
                 }
             }
             System.out.println();
-            while(!q2.isEmpty()){
+            while (!q2.isEmpty()) {
                 TreeNode node = q2.poll();
                 System.out.print(node.data + " ");
-                if(node.left!=null){
+                if (node.left != null) {
                     q1.add(node.left);
                 }
-                if(node.right!=null){
+                if (node.right != null) {
                     q1.add(node.right);
                 }
             }
         }
     }
 
+
+    public void verticalTraversalUsingMap(TreeNode root) {
+        if (root == null) return;
+        Map<Integer, LinkedList<TreeNode>> map = new HashMap<Integer, LinkedList<TreeNode>>();
+        verticalTraversalTree(map, root, 0);
+        for (Entry<Integer, LinkedList<TreeNode>> ent : map.entrySet()) {
+            System.out.print(ent.getKey() + " -->  ");
+            for (TreeNode n : ent.getValue()) {
+                System.out.print(n.data + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    public void verticalTraversalTree(Map<Integer, LinkedList<TreeNode>> map, TreeNode node, int hashVal) {
+        if (node == null) return;
+        LinkedList<TreeNode> nodes = map.get(hashVal);
+        if (nodes == null) {
+            nodes = new LinkedList<TreeNode>();
+        }
+        nodes.add(node);
+        map.put(hashVal, nodes);
+        verticalTraversalTree(map, node.left, hashVal - 1);
+        verticalTraversalTree(map, node.right, hashVal + 1);
+    }
+
+    public void levelOrderReverseTraversal(TreeNode root) {
+        if (root == null)
+            return;
+
+        Queue<TreeNode> q = new LinkedList<>();
+        Stack<TreeNode> s = new Stack<>();
+        q.add(root);
+
+        while (!q.isEmpty()) {
+            TreeNode n = q.remove();
+            s.push(n);
+            if (n.right != null) {
+                q.add(n.right);
+            }
+            if (n.left != null) {
+                q.add(n.left);
+            }
+        }
+        while (!s.isEmpty()) {
+            System.out.print(s.pop().data + " ");
+        }
+        System.out.println();
+    }
+
     public static void main(String[] args) {
 
         Tree t = new Tree();
-        t.createTree(new int[]{12,14,16,10,8,6,18,13,15,11,9});
+        t.createTree(new int[]{12, 14, 16, 10, 8, 6, 18, 13, 15, 11, 9});
         System.out.println("\n------------------Preorder Traversal-------------");
         t.preOrderTraversal(root);
         System.out.println("\n------------------Inorder Traversal-------------");
@@ -172,7 +222,10 @@ public class Tree {
         t.levelOrderTraversalLineByLine(root);
         System.out.println("\n------------------Levelorder Traversal Line by Line Using 2 Queue-------------");
         t.levelOrderTraversalLineByLineUsing2Q(root);
-
+        System.out.println("\n------------------Levelorder Reverse Traversal-------------");
+        t.levelOrderReverseTraversal(root);
+        System.out.println("\n-------------------Vertical Traversal Using Map---------------");
+        t.verticalTraversalUsingMap(root);
 
     }
 }
