@@ -24,8 +24,8 @@ public class AncestorProblems {
         System.out.println("The LCA of 18 and 16 is "+LCAOfBSTIterative(t.root,18,16));
         System.out.println("The LCA of 8 and 11 is "+LCAOfBSTIterative(t.root,8,11));
         System.out.println("The LCA of 8 and 18 is "+LCAOfBSTIterative(t.root,8,18));
-
-
+        System.out.println("Ancestors of Given Node 21 are : ");
+        printAncestors(t.root,11);
     }
     //here we are iteratively checking whether it is present in left subtree or right
     public static int LCAOfBSTIterative(TreeNode root, int n1, int n2) {
@@ -91,5 +91,24 @@ public class AncestorProblems {
 
         return false;
     }
+
+    private static boolean printAncestors(TreeNode node, int target)
+    {
+        if (node == null)
+            return false;
+
+        if (node.data == target)
+            return true;
+
+        if (printAncestors(node.left, target) || printAncestors(node.right, target))
+        {
+            System.out.print(node.data + " ");
+            return true;
+        }
+
+        return false;
+    }
+
+
 
 }
