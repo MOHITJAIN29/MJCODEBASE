@@ -98,7 +98,7 @@ public class Tree {
         }
     }
 
-    public void levelOrderTraversalLineByLine(TreeNode root) {
+    public static void levelOrderTraversalLineByLine(TreeNode root) {
         if (root == null)
             return;
         Queue<TreeNode> queue = new LinkedList<>();
